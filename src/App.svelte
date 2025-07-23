@@ -1,4 +1,5 @@
 <script>
+  import { Play, Pause, SkipBack, SkipForward } from '@lucide/svelte';
   const playlist = [
 		{
 			artist: 'Twenty One Pilots',
@@ -54,15 +55,36 @@
   <h2>{playlist[trackIndex].artist}</h2>
   <section>
     <button onclick={prevTrack}>
-      prev
+      <SkipBack/>
     </button>
     <button onclick= {playTrack}>
-      {isPlaying ? 'pause' : 'play'}
+      {#if isPlaying}
+        <Pause/>
+      {:else}
+        <Play/>
+      {/if}
     </button>
     <button onclick={nextTrack}>
-      next
+      <SkipForward/>
     </button>
   </section>
+  <div class="playlist">
+    <h3>Playlist</h3>
+    <div class="tracks">
+      {#each playlist as track, index}
+        <button class={index === trackIndex ? 'active' : ''} onclick={() => {
+          trackIndex = index;
+          audioFile.src = track.audio;
+          if (isPlaying) {
+            audioFile.play();
+          }
+        }}>
+          {track.name} - {track.artist}
+      </button>
+      {/each}
+    </div>
+    
+  </div>
 </main>
 
 <style>
@@ -87,11 +109,22 @@
 
   button {
     padding: 0.5rem 1rem;
-    background-color: #007bff;
-    color: white;
+    background-color: transparent;
     border: none;
-    border-radius: 0.25rem;
     cursor: pointer;
-    font-size: 1.25rem;
+  }
+
+  .playlist {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 2rem;
+  }
+
+  .tracks {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
   }
 </style>
