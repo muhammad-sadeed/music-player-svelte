@@ -1,5 +1,5 @@
 <script>
-  import { Play, Pause, SkipBack, SkipForward } from '@lucide/svelte';
+  import { Play, Pause, SkipBack, SkipForward, VolumeX, Volume1, Volume2 } from '@lucide/svelte';
   const playlist = [
 		{
 			artist: 'Twenty One Pilots',
@@ -21,6 +21,7 @@
   let isPlaying = false;
   let trackIndex = 0;
   let audioFile = new Audio(playlist[trackIndex].audio);
+  let volume = 50;
 
   const playTrack = () => {
     if (isPlaying) {
@@ -68,6 +69,23 @@
       <SkipForward/>
     </button>
   </section>
+  <div class="slider-container">
+    <label for="volume-slider">
+      {#if audioFile.volume === 0}
+        <VolumeX/>
+      {:else if audioFile.volume < 0.5}
+        <Volume1/>
+      {:else}
+        <Volume2/>
+      {/if}
+    </label>
+    <input name="volume-slider" type="range" min="0" max="100" bind:value={volume}
+          oninput={() => {
+            audioFile.volume = volume / 100;
+          }}
+    />
+    <label for="volume-slider">{volume}</label>
+  </div>
   <div class="playlist">
     <h3>Playlist</h3>
     <div class="tracks">
@@ -114,6 +132,11 @@
     cursor: pointer;
   }
 
+  label {
+    width: 24px;
+    height: 24px;
+  }
+
   .playlist {
     display: flex;
     flex-direction: column;
@@ -127,4 +150,16 @@
     flex-direction: column;
     gap: 0.5rem;
   }
+
+  .slider-container {
+    display: flex;
+    align-items: center;
+    margin-top: 1rem;
+    gap: 0.5rem;
+  }
+
+  input[type="range"] {
+    width: 200px;
+  }
+  
 </style>
