@@ -1,5 +1,6 @@
 <script>
   import { Play, Pause, SkipBack, SkipForward, FastForward, VolumeX, Volume1, Volume2, AlignJustify } from '@lucide/svelte';
+  
   const playlist = [
 		{
 			artist: 'Twenty One Pilots',
@@ -24,12 +25,11 @@
   let isPlaying = false;
   let trackIndex = 0;
   let audioFile = new Audio(playlist[trackIndex].audio);
-  let volume = 5;
+  let volume = 15;
   let trackDuration;
   let currentTrackDuration;
   let totalTrackDuration;
   let progress = 0;
-  let togglePlaylist = false;
 
 
   audioFile.onloadedmetadata = () => {
@@ -176,36 +176,34 @@
           oninput={() => {
             audioFile.volume = volume / 100;
           }}
+          class="range range-xs"
     />
     <label for="volume-slider">{volume}</label>
   </div>
 
   <div class="playlist">
-    <div class="playlist-header">
-      <button onclick={() => {
-        togglePlaylist = !togglePlaylist;
-      }}>
-        <AlignJustify size={24} />
-      </button>
-      <h3>Playlist</h3>
-    </div>
-    <div class={togglePlaylist ? 'tracks' : 'hidden'}>
-      {#each playlist as track, index}
-        <div class="playlist-items">
-          <button class={index === trackIndex ? 'active' : ''} onclick={() => {
-          trackIndex = index;
-          audioFile.src = track.audio;
-          if (isPlaying) {
-            audioFile.play();
-          }
-        }}>
-            <Play size={16} />
-          </button>
-          {track.name} - {track.artist}
+    <div class="dropdown dropdown-center">
+      <div tabindex="0" role="button" class="btn m-1">
+            <AlignJustify size={24} />
+          <h3>Playlist</h3>
       </div>
-      {/each}
+      <ul class="dropdown-content menu bg-base-100 rounded-box z-1 w-128 p-2 shadow-sm">
+        {#each playlist as track, index}
+          <li class="playlist-items">
+            <button class={index === trackIndex ? 'active' : ''} onclick={() => {
+            trackIndex = index;
+            audioFile.src = track.audio;
+            if (isPlaying) {
+              audioFile.play();
+            }
+          }}>
+              <Play size={16} />
+            </button>
+            {track.name} - {track.artist}
+        </li>
+        {/each}
+      </ul>
     </div>
-    
   </div>
 </main>
 
@@ -241,20 +239,6 @@
     height: 24px;
   }
 
-  .playlist-header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-  }
-
-  .playlist-header button {
-    /* width: 35px; */
-    height: 24px;
-    padding: 0;
-  }
-
   .playlist {
     display: flex;
     flex-direction: column;
@@ -277,12 +261,6 @@
     cursor: pointer;
   }
 
-  .tracks {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
   .slider-container {
     display: flex;
     align-items: center;
@@ -291,7 +269,7 @@
   }
 
   input[type="range"] {
-    width: 200px;
+    width: 150px;
   }
   
   .track-cover {
@@ -336,10 +314,6 @@
 
   .progress-bar:hover .bar {
     background-color:salmon ;
-  }
-
-  .hidden {
-    display: none;
   }
 
 </style>
