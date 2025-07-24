@@ -5,16 +5,19 @@
 			artist: 'Twenty One Pilots',
 			name: 'Routines in the Night',
 			audio: '/audios/Routines in the Night.mp3',
+      cover: '/Cover.jpg',
 		},
     {
 			artist: 'Twenty One Pilots',
 			name: 'Navigating',
 			audio: '/audios/Navigating.mp3',
+      cover: '/Cover.jpg',
 		},
     {
 			artist: 'Twenty One Pilots',
 			name: 'Midwest Indigo',
 			audio: '/audios/Midwest Indigo.mp3',
+      cover: '/Cover.jpg',
 		},
 	]
 
@@ -72,6 +75,7 @@
 </script>
 
 <main>
+  <img class="track-cover" src="{playlist[trackIndex].cover}" alt="track cover" />
   <h1>{playlist[trackIndex].name}</h1>
   <h2>{playlist[trackIndex].artist}</h2>
   <section>
@@ -182,4 +186,11 @@
     width: 200px;
   }
   
+  .track-cover {
+    width: 300px;
+    height: 300px;
+    border-radius: 10px;
+    object-fit: cover;
+    margin-bottom: 1rem;
+  }
 </style>
