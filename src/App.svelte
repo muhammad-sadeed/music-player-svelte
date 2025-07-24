@@ -49,6 +49,26 @@
     }
   }
 
+  addEventListener ('keydown', (event) => {
+    if (event.key === ' ') {
+      event.preventDefault(); // Prevent scrolling
+      playTrack();
+    } else if (event.key === 'ArrowRight') {
+      nextTrack();
+    } else if (event.key === 'ArrowLeft') {
+      prevTrack();
+    }
+    else if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      volume = Math.min(volume + 10, 100);
+      audioFile.volume = volume / 100;
+    } else if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      volume = Math.max(volume - 10, 0);
+      audioFile.volume = volume / 100;
+    }
+  });
+
 </script>
 
 <main>
